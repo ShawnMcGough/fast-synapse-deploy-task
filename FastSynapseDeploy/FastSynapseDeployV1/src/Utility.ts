@@ -7,21 +7,12 @@ import fs = require("fs");
 export class Utility {
 
     public static async getScriptPath(scriptLocation: string, fileExtension: string): Promise<string> {
-        // if (scriptLocation.toLowerCase() === "scriptpath") {
-        //     let filePath: string = tl.getPathInput("scriptPath", true, false);
-        //     if (Utility.checkIfFileExists(filePath, fileExtensions)) {
-        //         return filePath;
-        //     }
-        //     throw new Error(tl.loc('JS_InvalidFilePath', filePath));
-        // }
-        let tempDirectory = tl.getVariable('Agent.TempDirectory') || os.tmpdir();
-        //let inlineScript: string = tl.getInput("inlineScript", true);
-        // get the current working directory from the task
 
+        let tempDirectory = tl.getVariable('Agent.TempDirectory') || os.tmpdir();
         let templatePath: string = tl.getPathInput("TemplateFile", true, true);
         let parameterPath: string = tl.getPathInput("ParametersFile", true, true);
         let subscriptionId: string = tl.getVariable("subscriptionId");
-        let resourceGroup: string = 'synapse-prod-rg'
+        let resourceGroup: string = tl.getInput("resourceGroup", true);
         let workspace: string = tl.getInput("Workspace", true);
 
         let inlineScript: string = `cd ${__dirname}\n`;
@@ -39,58 +30,6 @@ export class Utility {
         await Utility.createFile(scriptPath, inlineScript);
         return scriptPath;
     }
-
-    // public static async getPowerShellScriptPath(scriptLocation: string, fileExtensions: string[], scriptArguments: string): Promise<string> {
-    //     let powerShellErrorActionPreference: string = tl.getInput('powerShellErrorActionPreference', false) || 'Stop';
-    //     switch (powerShellErrorActionPreference.toUpperCase()) {
-    //         case 'STOP':
-    //         case 'CONTINUE':
-    //         case 'SILENTLYCONTINUE':
-    //             break;
-    //         default:
-    //             throw new Error(tl.loc('JS_InvalidErrorActionPreference', powerShellErrorActionPreference));
-    //     }
-
-    //     // Write the script to disk.
-    //     tl.assertAgent('2.115.0');
-    //     let tempDirectory = tl.getVariable('Agent.TempDirectory') || os.tmpdir();
-
-    //     let contents: string[] = [];
-    //     contents.push(`$ErrorActionPreference = '${powerShellErrorActionPreference}'`);
-    //     contents.push(`$ErrorView = 'NormalView'`);
-    //     let filePath: string = tl.getPathInput("scriptPath", false, false);
-    //     if (scriptLocation.toLowerCase() === 'inlinescript') {
-    //         //let inlineScript: string = tl.getInput("inlineScript", true);
-    //         let inlineScript: string = 'echo "hello from powershell"';
-    //         filePath = path.join(tempDirectory, `azureclitaskscript${new Date().getTime()}_inlinescript.${fileExtensions[0]}`);
-    //         await Utility.createFile(filePath, inlineScript);
-    //     }
-    //     else{
-    //         if (!Utility.checkIfFileExists(filePath, fileExtensions)) {
-    //             throw new Error(tl.loc('JS_InvalidFilePath', filePath));
-    //         }
-    //     }
-
-    //     let content: string = `. '${filePath.replace(/'/g, "''")}' `;
-    //     if (scriptArguments) {
-    //         content += scriptArguments;
-    //     }
-    //     contents.push(content.trim());
-
-    //     let powerShellIgnoreLASTEXITCODE: boolean = tl.getBoolInput('powerShellIgnoreLASTEXITCODE', false);
-    //     if (!powerShellIgnoreLASTEXITCODE) {
-    //         contents.push(`if (!(Test-Path -LiteralPath variable:\LASTEXITCODE)) {`);
-    //         contents.push(`    Write-Host '##vso[task.debug]$LASTEXITCODE is not set.'`);
-    //         contents.push(`} else {`);
-    //         contents.push(`    Write-Host ('##vso[task.debug]$LASTEXITCODE: {0}' -f $LASTEXITCODE)`);
-    //         contents.push(`    exit $LASTEXITCODE`);
-    //         contents.push(`}`);
-    //     }
-
-    //     let scriptPath: string = path.join(tempDirectory, `azureclitaskscript${new Date().getTime()}.${fileExtensions[0]}`);
-    //     await Utility.createFile(scriptPath, '\ufeff' + contents.join(os.EOL), { encoding: 'utf8' });
-    //     return scriptPath;
-    // }
 
     public static checkIfAzurePythonSdkIsInstalled() {
         return !!tl.which("az", false);

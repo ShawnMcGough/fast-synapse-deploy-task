@@ -10,7 +10,7 @@ This task will deploy Azure Synapse artifacts using the publish branch.
 
 
 ## Pre-requisites for the task
-Requires running [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/overview) on the agents.
+Requires [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/overview) installed on the agents.
 
 ## Not Supported 
  - Deploying from branch other than publish
@@ -18,5 +18,5 @@ Requires running [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/overview
  - Incremental deployment (probably not needed given the speed)
 
 ## Release Notes
- - 1.0.x
+ - 1.0.3
    - Initial release

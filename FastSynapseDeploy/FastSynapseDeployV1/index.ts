@@ -15,23 +15,16 @@ export class azureclitask {
         var toolExecutionError = null;
         var exitCode: number = 0;
         try{
-            var cwd: string = tl.getPathInput("cwd", true, false);
-            //if (tl.getInput("scriptLocation", true).toLowerCase() === "scriptPath" && !tl.filePathSupplied("cwd")) {
-            if (!tl.filePathSupplied("cwd")) {
-                cwd = path.dirname(tl.getPathInput("scriptPath", true, true));
-            }
 
-            
-            // determines whether output to stderr will fail a task.
-            // some tools write progress and other warnings to stderr.  scripts can also redirect.
-            var failOnStdErr: boolean = tl.getBoolInput("failOnStandardError", false);
-            tl.mkdirP(cwd);
-            tl.cd(cwd);
             Utility.throwIfError(tl.execSync("az", "--version"));
-            // set az cli config dir
+
+            var failOnStdErr: boolean = true;
+
             this.setConfigDirectory();
             this.setAzureCloudBasedOnServiceEndpoint();
             var connectedService: string = tl.getInput("connectedServiceNameARM", true);
+
+            // login
             await this.loginAzureRM(connectedService);
 
             var scriptType: ScriptType = ScriptTypeFactory.getSriptType();
@@ -46,32 +39,11 @@ export class azureclitask {
                 errLinesCount++;
             });
 
-            var addSpnToEnvironment: boolean = tl.getBoolInput('addSpnToEnvironment', false);
-            var authorizationScheme = tl.getEndpointAuthorizationScheme(connectedService, true).toLowerCase();
-            if (!!addSpnToEnvironment && authorizationScheme == 'serviceprincipal') {
-                exitCode = await tool.exec({
-                    failOnStdErr: false,
-                    ignoreReturnCode: true,
-                    env: {
-                    ...process.env,
-                    ...{ servicePrincipalId: this.servicePrincipalId, servicePrincipalKey: this.servicePrincipalKey, tenantId: this.tenantId }
-                    }
+            exitCode = await tool.exec({
+                failOnStdErr: false,
+                ignoreReturnCode: true
                 });
-            } else if (!!addSpnToEnvironment && authorizationScheme == 'workloadidentityfederation') {
-                exitCode = await tool.exec({
-                    failOnStdErr: false,
-                    ignoreReturnCode: true,
-                    env: {
-                    ...process.env,
-                    ...{ servicePrincipalId: this.servicePrincipalId, idToken: this.federatedToken, tenantId: this.tenantId }
-                    }
-                });
-            } else {
-                exitCode = await tool.exec({
-                    failOnStdErr: false,
-                    ignoreReturnCode: true
-                 });
-            }
+
 
             if (failOnStdErr && aggregatedErrorLines.length > 0) {
                 let error = FAIL_ON_STDERR;
@@ -97,14 +69,14 @@ export class azureclitask {
 
             //set the task result to either succeeded or failed based on error was thrown or not
             if(toolExecutionError === FAIL_ON_STDERR) {
-                tl.setResult(tl.TaskResult.Failed, tl.loc("ScriptFailedStdErr"));
+                tl.setResult(tl.TaskResult.Failed, "ScriptFailedStdErr");
             } else if (toolExecutionError) {
-                tl.setResult(tl.TaskResult.Failed, tl.loc("ScriptFailed", toolExecutionError));
+                tl.setResult(tl.TaskResult.Failed, "ScriptFailed", toolExecutionError);
             } else if (exitCode != 0){
-                tl.setResult(tl.TaskResult.Failed, tl.loc("ScriptFailedWithExitCode", exitCode));
+                tl.setResult(tl.TaskResult.Failed, "ScriptFailedWithExitCode " +  exitCode);
             }
             else {
-                tl.setResult(tl.TaskResult.Succeeded, tl.loc("ScriptReturnCode", 0));
+                tl.setResult(tl.TaskResult.Succeeded, "ScriptReturnCode 0");
             }
 
             //Logout of Azure if logged in
@@ -135,7 +107,7 @@ export class azureclitask {
             const args = `login --service-principal -u "${servicePrincipalId}" --tenant "${tenantId}" --allow-no-subscriptions --federated-token "${federatedToken}"`;
 
             //login using OpenID Connect federation
-            Utility.throwIfError(tl.execSync("az", args), tl.loc("LoginFailed"));
+            Utility.throwIfError(tl.execSync("az", args), "LoginFailed");
 
              this.servicePrincipalId = servicePrincipalId;
              this.federatedToken = federatedToken;
@@ -165,21 +137,21 @@ export class azureclitask {
 
             let escapedCliPassword = cliPassword.replace(/"/g, '\\"');
             tl.setSecret(escapedCliPassword.replace(/\\/g, '\"'));
-            //login using svn
-            Utility.throwIfError(tl.execSync("az", `login --service-principal -u "${servicePrincipalId}" --password="${escapedCliPassword}" --tenant "${tenantId}" --allow-no-subscriptions`), tl.loc("LoginFailed"));
+            //login using spn
+            Utility.throwIfError(tl.execSync("az", `login --service-principal -u "${servicePrincipalId}" --password="${escapedCliPassword}" --tenant "${tenantId}" --allow-no-subscriptions`), "LoginFailed");
         }
         else if(authScheme.toLowerCase() == "managedserviceidentity") {
             //login using msi
-            Utility.throwIfError(tl.execSync("az", "login --identity"), tl.loc("MSILoginFailed"));
+            Utility.throwIfError(tl.execSync("az", "login --identity"), "MSILoginFailed");
         }
         else {
-            throw tl.loc('AuthSchemeNotSupported', authScheme);
+            throw 'AuthSchemeNotSupported ' + authScheme;
         }
 
         this.isLoggedIn = true;
         if (!!subscriptionID) {
             //set the subscription imported to the current subscription
-            Utility.throwIfError(tl.execSync("az", "account set --subscription \"" + subscriptionID + "\""), tl.loc("ErrorInSettingUpSubscription"));
+            Utility.throwIfError(tl.execSync("az", "account set --subscription \"" + subscriptionID + "\""), "ErrorInSettingUpSubscription");
         }
     }
 
@@ -190,10 +162,10 @@ export class azureclitask {
 
         if (!!tl.getVariable('Agent.TempDirectory')) {
             var azCliConfigPath = path.join(tl.getVariable('Agent.TempDirectory'), ".azclitask");
-            console.log(tl.loc('SettingAzureConfigDir', azCliConfigPath));
+            console.log('SettingAzureConfigDir ' + azCliConfigPath);
             process.env['AZURE_CONFIG_DIR'] = azCliConfigPath;
         } else {
-            console.warn(tl.loc('GlobalCliConfigAgentVersionWarning'));
+            console.warn('GlobalCliConfigAgentVersionWarning');
         }
     }
 
@@ -201,7 +173,7 @@ export class azureclitask {
         var connectedService: string = tl.getInput("connectedServiceNameARM", true);
         var environment = tl.getEndpointDataParameter(connectedService, 'environment', true);
         if (!!environment) {
-            console.log(tl.loc('SettingAzureCloud', environment));
+            console.log('SettingAzureCloud ' + environment);
             Utility.throwIfError(tl.execSync("az", "cloud set -n " + environment));
         }
     }
@@ -212,7 +184,7 @@ export class azureclitask {
         }
         catch (err) {
             // task should not fail if logout doesn`t occur
-            tl.warning(tl.loc("FailedToLogout"));
+            tl.warning("FailedToLogout");
         }
     }
 
@@ -239,7 +211,7 @@ export class azureclitask {
 tl.setResourcePath(path.join(__dirname, "task.json"));
 
 if (!Utility.checkIfAzurePythonSdkIsInstalled()) {
-    tl.setResult(tl.TaskResult.Failed, tl.loc("AzureSDKNotFound"));
+    tl.setResult(tl.TaskResult.Failed, "AzureSDKNotFound");
 }
 
 azureclitask.runMain();

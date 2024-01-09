@@ -3,22 +3,12 @@ import tl = require("azure-pipelines-task-lib/task");
 
 export class ScriptTypeFactory {
     public static getSriptType(): ScriptType {
-        //let scriptType: string = tl.getInput("scriptType", true);
-        //let scriptLocation: string = tl.getInput("scriptLocation", true);
-        // set the script type based on the agent.os
+
         let scriptType: string = tl.getVariable('Agent.OS') === 'Windows_NT' ? 'batch' : 'bash';
-        //let scriptType: string = 'ps';
         let scriptLocation: string = 'inlinescript';
-        if (!(['inlinescript', 'scriptpath'].find((acceptedValue) => { return scriptLocation.toLowerCase() === acceptedValue; }))) {
-            throw new Error(tl.loc('UnacceptedScriptLocationValue', scriptLocation));
-        }
 
         let scriptArguments: string = tl.getInput("scriptArguments", false);
         switch(scriptType){
-            // case 'ps':
-            //     return new WindowsPowerShell(scriptLocation, scriptArguments);
-            // case 'pscore':
-            //     return new PowerShellCore(scriptLocation, scriptArguments);
             case 'bash':
                 return new Bash(scriptLocation, scriptArguments);
             case 'batch':
@@ -48,50 +38,9 @@ export abstract class ScriptType {
     }
 }
 
-// export class WindowsPowerShell extends ScriptType {
-
-//     public async getTool(): Promise<any> {
-//         this._scriptPath = await Utility.getPowerShellScriptPath(this._scriptLocation, ['ps1'], this._scriptArguments);
-//         let tool: any = tl.tool(tl.which('powershell', true))
-//             .arg('-NoLogo')
-//             .arg('-NoProfile')
-//             .arg('-NonInteractive')
-//             .arg('-ExecutionPolicy')
-//             .arg('Unrestricted')
-//             .arg('-Command')
-//             .arg(`. '${this._scriptPath.replace(/'/g, "''")}'`);
-//         return tool;
-//     }
-
-//     public async cleanUp(): Promise<void> {
-//         await Utility.deleteFile(this._scriptPath);
-//     }
-// }
-
-// export class PowerShellCore extends ScriptType {
-
-//     public async getTool(): Promise<any> {
-//         this._scriptPath = await Utility.getPowerShellScriptPath(this._scriptLocation, ['ps1'], this._scriptArguments);
-//         let tool: any = tl.tool(tl.which('pwsh', true))
-//             .arg('-NoLogo')
-//             .arg('-NoProfile')
-//             .arg('-NonInteractive')
-//             .arg('-ExecutionPolicy')
-//             .arg('Unrestricted')
-//             .arg('-Command')
-//             .arg(`. '${this._scriptPath.replace(/'/g, "''")}'`);
-//         return tool;
-//     }
-
-//     public async cleanUp(): Promise<void> {
-//         await Utility.deleteFile(this._scriptPath);
-//     }
-// }
-
 export class Bash extends ScriptType {
 
     public async getTool(): Promise<any> {
-        //this._scriptPath = await Utility.getScriptPath(this._scriptLocation, ['sh']);
         this._scriptPath = await Utility.getScriptPath(this._scriptLocation, 'sh');
         let tool: any = tl.tool(tl.which("bash", true));
         tool.arg(this._scriptPath);
@@ -103,7 +52,6 @@ export class Bash extends ScriptType {
 export class Batch extends ScriptType {
 
     public async getTool(): Promise<any> {
-        //this._scriptPath = await Utility.getScriptPath(this._scriptLocation, ['bat', 'cmd']);
         this._scriptPath = await Utility.getScriptPath(this._scriptLocation, 'bat');
         let tool: any = tl.tool(tl.which(this._scriptPath, true));
         tool.line(this._scriptArguments); // additional scriptArguments should always call line. line() parses quoted arg strings

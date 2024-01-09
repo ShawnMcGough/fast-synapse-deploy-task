@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "fast-synapse-deploy",
     "name": "Fast Synapse Deploy",
-    "version": "1.0.2",
+    "version": "1.0.4",
     "publisher": "shawn-mcgough",
     "targets": [
         {
@@ -14,7 +14,7 @@
         "Azure Pipelines"
     ],
     "icons": {
-        "default": "images/icon.png"        
+        "default": "images/icon.png"
     },
     "content": {
         "details": {
@@ -23,7 +23,7 @@
     },    
     "files": [
         {
-            "path": "FastSynapseDeployV1"
+            "path": "FastSynapseDeploy"
         }
     ],
     "contributions": [
@@ -34,7 +34,7 @@
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "FastSynapseDeployV1"
+                "name": "FastSynapseDeploy"
             }
         }
     ]
