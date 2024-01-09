@@ -1,0 +1,41 @@
+{
+    "manifestVersion": 1,
+    "id": "fast-synapse-deploy",
+    "name": "Fast Synapse Deploy",
+    "version": "1.0.2",
+    "publisher": "shawn-mcgough",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],    
+    "description": "Deploy Azure Synapse artifacts using the publish branch. A faster alternative to the Microsoft Synapse Deploy task.",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "icons": {
+        "default": "images/icon.png"        
+    },
+    "content": {
+        "details": {
+            "path": "README.md"
+        }
+    },    
+    "files": [
+        {
+            "path": "FastSynapseDeployV1"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "fast-synapse-deploy",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "FastSynapseDeployV1"
+            }
+        }
+    ]
+}

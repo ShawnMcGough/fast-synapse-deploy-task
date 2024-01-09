@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "azure-devops-node-api": "^12.1.0",
+    "azure-pipelines-task-lib": "^4.7.0",
+    "azure-pipelines-tasks-artifacts-common": "^2.230.0"    
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "@types/q": "^1.5.8"
+  }
+}
