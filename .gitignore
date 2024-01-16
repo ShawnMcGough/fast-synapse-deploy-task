@@ -2,3 +2,5 @@ node_modules
 *.js
 package-lock.json
 .taskkey
+SynapseDeploy
+SynapseDeploy.exe
