@@ -4,10 +4,9 @@
 This task will deploy Azure Synapse artifacts using the publish branch.
 
 ### Major Features
- - Optimized for speed using connection pooling and multiple async requests to the Synapse API
-   - The [official Microsoft task](https://marketplace.visualstudio.com/items?itemName=AzureSynapseWorkspace.synapsecicd-deploy) is conservative. This task allows for more async requests, resulting in a faster deployment. 
- - Leverages Azure CLI for authentication
-
+ - Optimized for speed using connection pooling and multiple async requests to the Synapse API.
+ - Leverages Azure CLI for authentication.
+ - Supports HTTP_PROXY, HTTPS_PROXY, and NO_PROXY environment variables.
 
 ## Pre-requisites for the task
 Requires [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/overview) installed on the agents.
@@ -17,6 +16,10 @@ Requires [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/overview) instal
  - Deploying ManagedPrivateEndpoints (use the official Microsoft task)
  - Incremental deployment (probably not needed given the speed)
 
+## Should I use this task?
+ - If the [official Microsoft task](https://marketplace.visualstudio.com/items?itemName=AzureSynapseWorkspace.synapsecicd-deploy) doesn't meet your needs, give it a try. This task allows for more async requests, resulting in a faster deployment. 
+
+
 ## Release Notes
- - 1.0.3
+ - 1.0.4
    - Initial release
