@@ -2,8 +2,9 @@
   "manifestVersion": 1,
   "id": "fast-synapse-deploy",
   "name": "Fast Synapse Deploy",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "publisher": "shawn-mcgough",
+  "public": true,
   "targets": [
     {
       "id": "Microsoft.VisualStudio.Services"
