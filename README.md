@@ -21,5 +21,5 @@ Requires [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/overview) instal
 
 
 ## Release Notes
- - 1.0.7
+ - 1.0.9
    - Initial public release

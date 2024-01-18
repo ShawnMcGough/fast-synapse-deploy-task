@@ -14,7 +14,9 @@ export class Utility {
         let subscriptionId: string = tl.getVariable("subscriptionId");
         let resourceGroup: string = tl.getInput("resourceGroup", true);
         let workspace: string = tl.getInput("Workspace", true);
-
+        let deleteArtifacts: boolean = tl.getBoolInput("DeleteArtifactsNotInTemplate", true);
+        let overrideParameters: string = tl.getInput("OverrideArmParameters", false) ?? '';
+        
         let inlineScript: string = `cd ${__dirname}\n`;
         if (fileExtension === 'bat') {
             inlineScript += 'SynapseDeploy.exe'
@@ -24,8 +26,8 @@ export class Utility {
             inlineScript += './SynapseDeploy '
         }
 
-        inlineScript += ` ${templatePath} ${parameterPath} ${subscriptionId} ${resourceGroup} ${workspace}`
-        
+        inlineScript += ` "${templatePath}" "${parameterPath}" ${subscriptionId} ${resourceGroup} ${workspace} ${deleteArtifacts} "${overrideParameters}"`
+        console.log(inlineScript)
         let scriptPath: string = path.join(tempDirectory, `azureclitaskscript${new Date().getTime()}.${fileExtension}`);
         await Utility.createFile(scriptPath, inlineScript);
         return scriptPath;
