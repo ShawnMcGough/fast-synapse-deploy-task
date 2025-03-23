@@ -21,5 +21,10 @@ Requires [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/overview) instal
 
 
 ## Release Notes
+ - 1.0.10
+   - Improved JSON parsing & retry logic
+   - Dependency updates including fix for breaking change in ChainedTokenCredential
+   - Reduced SYNAPSE_API_LIMIT default from unlimited to 150
+
  - 1.0.9
    - Initial public release
