@@ -16,7 +16,7 @@ $task.version.Patch = [int]$task.version.Patch + 1
 Write-Host "Task version: $($task.version.Major).$($task.version.Minor).$($task.version.Patch)"
 $task | ConvertTo-Json -depth 10 | Set-Content .\FastSynapseDeploy\FastSynapseDeployV1\task.json
 
-$origingalTask = $task | ConvertTo-Json -depth 10
+$originalTask = $task | ConvertTo-Json -depth 10
 
 tfx extension create --manifest-globs vss-extension.json
 
@@ -34,4 +34,4 @@ $task | ConvertTo-Json -depth 10 | Set-Content .\FastSynapseDeploy\FastSynapseDe
 tfx extension create --manifest-globs vss-extension-dev.json
 
 # restore the original task with the incremented version
-$origingalTask | Set-Content .\FastSynapseDeploy\FastSynapseDeployV1\task.json
+$originalTask | Set-Content .\FastSynapseDeploy\FastSynapseDeployV1\task.json

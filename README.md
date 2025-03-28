@@ -1,7 +1,7 @@
 # Fast Synapse Deploy
 
 ## Overview
-This task will deploy Azure Synapse artifacts using the publish branch.
+This action will deploy Azure Synapse artifacts, fast!
 
 ### Major Features
  - Optimized for speed using connection pooling and multiple async requests to the Synapse API.
