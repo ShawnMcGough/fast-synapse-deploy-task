@@ -20,7 +20,7 @@
   "version": {
     "Major": 1,
     "Minor": 0,
-    "Patch": 41
+    "Patch": 42
   },
   "minimumAgentVersion": "2.0.0",
   "instanceNameFormat": "Deploy Synapse Workspace",
