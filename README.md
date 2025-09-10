@@ -49,9 +49,6 @@ steps:
       ParametersFile: ExportedArtifacts/TemplateParametersForWorkspace.json
 ```
 
-
-
-
 ## SYNAPSE_API_LIMIT
 This task seeks to deploy artifacts as quickly as possible. To that end, it will make multiple concurrent requests to the Synapse API. Depending on usage patterns (multiple and/or frequent deployments, for example), the Synapse API might respond with `TooManyRequests [429]`. The `SYNAPSE_API_LIMIT` environment variable is used to limit the number of concurrent requests to try and mitigate this issue.  Unfortunately, the Synapse API does not implement a `retry-after` header, so the entire deploy must be terminated.
 
@@ -82,10 +79,12 @@ Completed delete in 00:00:32.3423195.
  - 1.0.9
    - Initial public release
 
+## Enterprise and Support Options
+This extension is free for personal and commercial use under the terms in LICENSE. For enterprise features, including:
 
+- Source code access (under NDA)
+- Security audits and certifications
+- Custom modifications or integrations
+- Ongoing support SLAs (e.g., priority bug fixes, updates)
 
-
-
-
-
-
+Contact Jojitech LLC at info@jojitech.com

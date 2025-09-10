@@ -1,10 +1,6 @@
-This repository is licensed under the MIT License, except for the proprietary 
-binaries SynapseDeploy.exe and SynapseDeploy, which are provided as-is with all 
-rights reserved by Jojitech LLC. Contact info@jojitech.com for licensing inquiries.
-
 MIT License
 
-Copyright (c) 2024 Shawn McGough
+Copyright (c) 2024 Shawn McGough / Jojitech LLC
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,3 +19,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+## Additional Terms for SynapseDeploy Binaries
+
+The binary files SynapseDeploy.exe & SynapseDeploy included in this repository are proprietary software owned by Jojitech LLC. All rights reserved. You may not reverse-engineer, decompile, or modify this binary. Use is permitted for personal and commercial purposes as part of this extension, provided it is used as-is. For enterprise licensing, source code access, or custom modifications, contact Jojitech LLC at info@jojitech.com.
