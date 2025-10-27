@@ -1,14 +1,11 @@
 import tl = require("azure-pipelines-task-lib/task");
-import os = require("os");
 import path = require("path");
 import { IExecSyncResult } from 'azure-pipelines-task-lib/toolrunner';
 import fs = require("fs");
 
 export class Utility {
 
-    public static async getScriptPath(scriptLocation: string, fileExtension: string): Promise<string> {
-
-        let tempDirectory = tl.getVariable('Agent.TempDirectory') || os.tmpdir();
+    public static async getSynapseDeployTool(): Promise<any> {
         let templatePath: string = tl.getPathInput("TemplateFile", true, true);
         let parameterPath: string = tl.getPathInput("ParametersFile", true, true);
         let subscriptionId: string = tl.getVariable("subscriptionId");
@@ -17,20 +14,41 @@ export class Utility {
         let deleteArtifacts: boolean = tl.getBoolInput("DeleteArtifactsNotInTemplate", true);
         let overrideParameters: string = tl.getInput("OverrideArmParameters", false) ?? '';
         
-        let inlineScript: string = `cd ${__dirname}\n`;
-        if (fileExtension === 'bat') {
-            inlineScript += 'SynapseDeploy.exe'
-        } else {
-            inlineScript += 'chmod +x SynapseDeploy\n'
-            inlineScript += 'ls -la\n'
-            inlineScript += './SynapseDeploy '
+        // Determine the executable name based on the platform
+        let isWindows: boolean = tl.getVariable('Agent.OS') === 'Windows_NT';
+        let executableName: string = isWindows ? 'SynapseDeploy.exe' : 'SynapseDeploy';
+        let executablePath: string = path.join(__dirname, executableName);
+        
+        // On Linux/Mac, ensure the binary has execute permissions
+        if (!isWindows && fs.existsSync(executablePath)) {
+            try {
+                fs.chmodSync(executablePath, '755');
+                console.log(`Set execute permissions on ${executablePath}`);
+            } catch (err) {
+                console.warn(`Could not set execute permissions: ${err}`);
+            }
         }
-
-        inlineScript += ` "${templatePath}" "${parameterPath}" ${subscriptionId} ${resourceGroup} ${workspace} ${deleteArtifacts} "${overrideParameters}"`
-        console.log(inlineScript)
-        let scriptPath: string = path.join(tempDirectory, `azureclitaskscript${new Date().getTime()}.${fileExtension}`);
-        await Utility.createFile(scriptPath, inlineScript);
-        return scriptPath;
+        
+        // Create the ToolRunner with properly escaped arguments
+        let tool = tl.tool(executablePath);
+        tool.arg(templatePath);
+        tool.arg(parameterPath);
+        tool.arg(subscriptionId);
+        tool.arg(resourceGroup);
+        tool.arg(workspace);
+        tool.arg(deleteArtifacts.toString());
+        tool.arg(overrideParameters); // ToolRunner automatically escapes special characters including quotes
+        
+        console.log(`Executing: ${executablePath}`);
+        console.log(`Template: ${templatePath}`);
+        console.log(`Parameters: ${parameterPath}`);
+        console.log(`Subscription: ${subscriptionId}`);
+        console.log(`Resource Group: ${resourceGroup}`);
+        console.log(`Workspace: ${workspace}`);
+        console.log(`Delete Artifacts: ${deleteArtifacts}`);
+        console.log(`Override Parameters: ${overrideParameters}`);
+        
+        return tool;
     }
 
     public static checkIfAzurePythonSdkIsInstalled() {

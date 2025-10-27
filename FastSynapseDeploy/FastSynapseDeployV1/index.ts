@@ -2,7 +2,6 @@ import path = require("path");
 import tl = require("azure-pipelines-task-lib/task");
 import fs = require("fs");
 import { Utility } from "./src/Utility";
-import { ScriptType, ScriptTypeFactory } from "./src/ScriptType";
 import { getSystemAccessToken } from 'azure-pipelines-tasks-artifacts-common/webapi';
 import { getHandlerFromToken, WebApi } from "azure-devops-node-api";
 import { ITaskApi } from "azure-devops-node-api/TaskApi";
@@ -27,8 +26,7 @@ export class azureclitask {
             // login
             await this.loginAzureRM(connectedService);
 
-            var scriptType: ScriptType = ScriptTypeFactory.getSriptType();
-            var tool: any = await scriptType.getTool();
+            var tool: any = await Utility.getSynapseDeployTool();
 
             let errLinesCount: number = 0;
             let aggregatedErrorLines: string[] = [];
@@ -58,10 +56,6 @@ export class azureclitask {
             }
         }
         finally {
-            if (scriptType) {
-                await scriptType.cleanUp();
-            }
-
             if (this.cliPasswordPath) {
                 tl.debug('Removing spn certificate file');
                 tl.rmRF(this.cliPasswordPath);
