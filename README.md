@@ -62,6 +62,9 @@ Completed delete in 00:00:32.3423195.
 
 ## Release Notes
 
+ - 1.0.14
+   - bump packages
+
  - 1.0.13
    - engine upgraded to .net 9
 
