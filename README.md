@@ -62,6 +62,12 @@ Completed delete in 00:00:32.3423195.
 
 ## Release Notes
 
+ - 1.1.16
+   - improved parsing for override parameters
+
+ - 1.1.15
+   - switch to toolrunner to ensure consistent escaping for override parameters
+   
  - 1.0.14
    - bump packages
 
