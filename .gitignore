@@ -5,3 +5,4 @@ package-lock.json
 SynapseDeploy
 SynapseDeploy.exe
 *.vsix
+AzureSynapseWorkspace.synapsecicd-deploy-2.5.0
