@@ -6,3 +6,7 @@ SynapseDeploy
 SynapseDeploy.exe
 *.vsix
 AzureSynapseWorkspace.synapsecicd-deploy-2.5.0
+create-extension-undo.ps1
+create-extension-prerelease.ps1
+vss-extension-prerelease.json
+DEV.md

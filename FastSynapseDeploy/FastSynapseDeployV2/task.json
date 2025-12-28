@@ -1,0 +1,117 @@
+{
+  "id": "95321d31-f576-4dc1-a6c8-a29e51c41830",
+  "name": "FastSynapseDeploy",
+  "friendlyName": "Fast Synapse Deploy",
+  "description": "Deploy Azure Synapse artifacts",
+  "author": "Shawn McGough",
+  "helpUrl": "https://marketplace.visualstudio.com/items?itemName=shawn-mcgough.fast-synapse-deploy",
+  "helpMarkDown": "",
+  "releaseNotes": "",
+  "category": "Deploy",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "runsOn": [
+    "Agent",
+    "DeploymentGroup"
+  ],
+  "demands": [],
+  "version": {
+    "Major": 2,
+    "Minor": 0,
+    "Patch": 14
+  },
+  "minimumAgentVersion": "2.0.0",
+  "instanceNameFormat": "Deploy Synapse Workspace",
+  "showEnvironmentVariables": true,
+  "inputs": [
+    {
+      "name": "connectedServiceNameARM",
+      "aliases": [
+        "azureSubscription"
+      ],
+      "type": "connectedService:AzureRM",
+      "label": "Azure Resource Manager connection",
+      "required": true,
+      "helpMarkDown": "Select an Azure Resource Manager service connection for the deployment",
+      "properties": {
+        "EndpointFilterRule": ""
+      }
+    },
+    {
+      "name": "ResourceGroup",
+      "type": "pickList",
+      "label": "Synapse workspace resource group",
+      "required": true,
+      "properties": {
+        "EditableOptions": true
+      },
+      "helpMarkDown": "Select the resource group for the target Synapse workspace."
+    },
+    {
+      "name": "Workspace",
+      "type": "string",
+      "label": "Synapse workspace name",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Enter the Synapse workspace name."
+    },
+    {
+      "name": "TemplateFile",
+      "type": "filePath",
+      "label": "Template",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Specify the path to the template file."
+    },
+    {
+      "name": "ParametersFile",
+      "type": "filePath",
+      "label": "Template parameters",
+      "defaultValue": "",
+      "required": true,
+      "helpMarkDown": "Specify the path to the parameters file."
+    },
+    {
+      "name": "DeleteArtifactsNotInTemplate",
+      "type": "boolean",
+      "label": "Delete Artifacts Not In Template",
+      "defaultValue": "true",
+      "required": true,
+      "helpMarkDown": "If checked, all artifacts in the workspace not present in the template will be deleted."
+    },
+    {
+      "name": "OverrideArmParameters",
+      "type": "multiLine",
+      "label": "OverrideParameters",
+      "defaultValue": "",
+      "required": false,
+      "helpMarkDown": "Enter any parameters that you want to override, separated by a space, for example, -key1 value1 -key2 value2 -key3 value3.",
+      "properties": {
+        "editorExtension": "ms.vss-services-azure.parameters-grid"
+      }
+    }
+  ],
+  "dataSourceBindings": [
+    {
+      "target": "resourceGroup",
+      "endpointId": "$(connectedServiceNameARM)",
+      "dataSourceName": "AzureResourceGroups"
+    }
+  ],
+  "execution": {
+    "Node10": {
+      "target": "index.js",
+      "argumentFormat": ""
+    },
+    "Node16": {
+      "target": "index.js",
+      "argumentFormat": ""
+    },
+    "Node20_1": {
+      "target": "index.js",
+      "argumentFormat": ""
+    }
+  }
+}
