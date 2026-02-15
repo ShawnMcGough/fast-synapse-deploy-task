@@ -3,7 +3,7 @@
   "name": "FastSynapseDeploy",
   "friendlyName": "Fast Synapse Deploy",
   "description": "Deploy Azure Synapse artifacts",
-  "author": "Shawn McGough",
+  "author": "jojitech",
   "helpUrl": "https://marketplace.visualstudio.com/items?itemName=shawn-mcgough.fast-synapse-deploy",
   "helpMarkDown": "",
   "releaseNotes": "",

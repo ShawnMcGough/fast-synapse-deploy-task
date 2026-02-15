@@ -3,7 +3,7 @@
   "name": "FastSynapseDeploy",
   "friendlyName": "Fast Synapse Deploy",
   "description": "Deploy Azure Synapse artifacts",
-  "author": "Shawn McGough",
+  "author": "jojitech",
   "helpUrl": "https://marketplace.visualstudio.com/items?itemName=shawn-mcgough.fast-synapse-deploy",
   "helpMarkDown": "",
   "releaseNotes": "",
@@ -17,10 +17,17 @@
     "DeploymentGroup"
   ],
   "demands": [],
+  "groups": [
+    {
+      "name": "advanced",
+      "displayName": "Advanced",
+      "isExpanded": false
+    }
+  ],
   "version": {
     "Major": 3,
     "Minor": 0,
-    "Patch": 6
+    "Patch": 7
   },
   "minimumAgentVersion": "2.0.0",
   "instanceNameFormat": "Deploy Synapse Workspace",
@@ -115,6 +122,15 @@
       "defaultValue": "false",
       "required": false,
       "helpMarkDown": "Perform a dry run without applying changes"
+    },
+    {
+      "name": "disableTelemetry",
+      "type": "boolean",
+      "label": "Disable anonymous telemetry",
+      "defaultValue": false,
+      "required": false,
+      "groupName": "advanced",
+      "helpMarkDown": "Opt out of anonymous usage telemetry. Only anonymous, non-sensitive metadata is collected. See the README for details."
     }
   ],
   "dataSourceBindings": [

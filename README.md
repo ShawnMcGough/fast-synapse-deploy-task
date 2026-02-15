@@ -171,6 +171,37 @@ Requires [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/overview) instal
 Please consider [leaving a review](https://marketplace.visualstudio.com/items?itemName=shawn-mcgough.fast-synapse-deploy&ssr=false#review-details). I love to hear how it is helping with deployments!
 At the end of the log there is duration information:
 
+## Telemetry
+
+This action collects **anonymous, minimal usage telemetry** via Azure Application Insights to help the maintainer understand adoption and prioritize improvements. **No sensitive or identifying information is ever collected.**
+
+### What is collected
+
+| Field | Example | Purpose |
+|-------|---------|--------|
+| Runner OS | `Linux` / `Windows` | Know which platforms to prioritize |
+| Action version | `v3` | Track version adoption |
+| SHA-256 hash of `github.repository` | `a1b2c3d4e5...` | Count unique repos (cannot be reversed to identify you) |
+| Event type | `deploy` / `dry-run` | Understand feature usage |
+| Deploy speed | `auto` / `fast` / `safe` / `yolo` | Understand throttle preferences |
+| Feature flags | `selective: true` | Understand feature usage |
+
+### What is **never** collected
+
+- Repository name, organization, or usernames
+- Azure subscription, resource group, or workspace names
+- Template contents, parameters, or file paths
+- Tokens, credentials, or IP addresses
+
+### Opting out
+
+Set the `disable-telemetry` input to `true`
+
+### How it works
+
+The telemetry configuration (App Insights connection string and enabled flag) is stored in [.telemetry.json](.telemetry.json) on the `main` branch. At runtime, the telemetry step fetches this config file so that the connection string can be rotated or telemetry can be disabled globally without publishing a new action version. If the config file is unreachable or `enabled` is `false`, telemetry is silently skipped.
+
+
 ## Release Notes
 
 ### v3.*
