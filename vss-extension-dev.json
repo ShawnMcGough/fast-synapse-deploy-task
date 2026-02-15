@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "fast-synapse-deploy-dev",
   "name": "[DEV] Fast Synapse Deploy",
-  "version": "2.0.14",
+  "version": "3.0.6",
   "publisher": "shawn-mcgough",
   "public": false,
   "targets": [

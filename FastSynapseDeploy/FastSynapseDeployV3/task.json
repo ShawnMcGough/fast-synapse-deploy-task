@@ -18,9 +18,9 @@
   ],
   "demands": [],
   "version": {
-    "Major": 2,
+    "Major": 3,
     "Minor": 0,
-    "Patch": 16
+    "Patch": 6
   },
   "minimumAgentVersion": "2.0.0",
   "instanceNameFormat": "Deploy Synapse Workspace",
@@ -91,6 +91,30 @@
       "properties": {
         "editorExtension": "ms.vss-services-azure.parameters-grid"
       }
+    },
+    {
+      "name": "hashCheck",
+      "type": "boolean",
+      "label": "Hash Check",
+      "defaultValue": "true",
+      "required": false,
+      "helpMarkDown": "Enable hash-based change detection"
+    },
+    {
+      "name": "selective",
+      "type": "boolean",
+      "label": "Selective",
+      "defaultValue": "true",
+      "required": false,
+      "helpMarkDown": "Enable selective deployment"
+    },
+    {
+      "name": "dryRun",
+      "type": "boolean",
+      "label": "Dry Run",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "Perform a dry run without applying changes"
     }
   ],
   "dataSourceBindings": [

@@ -1,8 +1,8 @@
 {
   "dependencies": {
     "azure-devops-node-api": "^12.5.0",
-    "azure-pipelines-task-lib": "^4.17.3",
-    "azure-pipelines-tasks-artifacts-common": "2.247.0"
+    "azure-pipelines-task-lib": "^5.2.6",
+    "azure-pipelines-tasks-artifacts-common": "^2.270.0"
   },
   "devDependencies": {
     "@types/node": "^20.17.25",
