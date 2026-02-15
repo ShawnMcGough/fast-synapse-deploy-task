@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "fast-synapse-deploy",
   "name": "Fast Synapse Deploy",
-  "version": "3.0.7",
+  "version": "3.0.9",
   "publisher": "shawn-mcgough",
   "public": true,
   "targets": [
@@ -10,7 +10,7 @@
       "id": "Microsoft.VisualStudio.Services"
     }
   ],
-  "description": "Deploy Azure Synapse artifacts using the publish branch. A faster alternative to the Microsoft Synapse Deploy task.",
+  "description": "The fastest way to deploy Azure Synapse artifacts. With OIDC auth and proxy support.",
   "categories": [
     "Azure Pipelines"
   ],

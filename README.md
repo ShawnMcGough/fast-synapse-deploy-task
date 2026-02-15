@@ -181,7 +181,7 @@ This action collects **anonymous, minimal usage telemetry** via Azure Applicatio
 |-------|---------|--------|
 | Runner OS | `Linux` / `Windows` | Know which platforms to prioritize |
 | Action version | `v3` | Track version adoption |
-| SHA-256 hash of `github.repository` | `a1b2c3d4e5...` | Count unique repos (cannot be reversed to identify you) |
+| SHA-256 hash of `repository` | `a1b2c3d4e5...` | Count unique repos (cannot be reversed to identify you) |
 | Event type | `deploy` / `dry-run` | Understand feature usage |
 | Deploy speed | `auto` / `fast` / `safe` / `yolo` | Understand throttle preferences |
 | Feature flags | `selective: true` | Understand feature usage |
@@ -199,7 +199,7 @@ Set the `disable-telemetry` input to `true`
 
 ### How it works
 
-The telemetry configuration (App Insights connection string and enabled flag) is stored in [.telemetry.json](.telemetry.json) on the `main` branch. At runtime, the telemetry step fetches this config file so that the connection string can be rotated or telemetry can be disabled globally without publishing a new action version. If the config file is unreachable or `enabled` is `false`, telemetry is silently skipped.
+The telemetry configuration (App Insights connection string and enabled flag) is stored in `.telemetry.json` on the `main` branch. At runtime, the telemetry step fetches this config file so that the connection string can be rotated or telemetry can be disabled globally without publishing a new action version. If the config file is unreachable or `enabled` is `false`, telemetry is silently skipped.
 
 
 ## Release Notes
