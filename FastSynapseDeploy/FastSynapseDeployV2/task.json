@@ -17,10 +17,17 @@
     "DeploymentGroup"
   ],
   "demands": [],
+  "groups": [
+    {
+      "name": "advanced",
+      "displayName": "Advanced",
+      "isExpanded": false
+    }
+  ],
   "version": {
     "Major": 2,
     "Minor": 0,
-    "Patch": 16
+    "Patch": 17
   },
   "minimumAgentVersion": "2.0.0",
   "instanceNameFormat": "Deploy Synapse Workspace",
@@ -91,6 +98,15 @@
       "properties": {
         "editorExtension": "ms.vss-services-azure.parameters-grid"
       }
+    },
+    {
+      "name": "disableTelemetry",
+      "type": "boolean",
+      "label": "Disable anonymous telemetry",
+      "defaultValue": false,
+      "required": false,
+      "groupName": "advanced",
+      "helpMarkDown": "Opt out of anonymous usage telemetry. Only anonymous, non-sensitive metadata is collected. See the README for details."
     }
   ],
   "dataSourceBindings": [

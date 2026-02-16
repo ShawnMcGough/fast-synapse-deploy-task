@@ -1,6 +1,7 @@
 import path = require("path");
 import tl = require("azure-pipelines-task-lib/task");
 import fs = require("fs");
+import { execFile } from "child_process";
 import { Utility } from "./src/Utility";
 import { getSystemAccessToken } from 'azure-pipelines-tasks-artifacts-common/webapi';
 import { getHandlerFromToken, WebApi } from "azure-devops-node-api";
@@ -14,6 +15,34 @@ export class azureclitask {
         var toolExecutionError = null;
         var exitCode: number = 0;
         try{
+
+            // --- Telemetry (fire-and-forget) ---
+            const disableTelemetry = tl.getBoolInput('disableTelemetry', false);
+            if (!disableTelemetry) {
+                try {
+                    const scriptPath = path.join(__dirname, 'scripts', 'telemetry.sh');
+                    const taskJsonPath = path.join(__dirname, 'task.json');
+                    let taskVersion = '1.2.4';
+                    try {
+                        const taskJson = JSON.parse(fs.readFileSync(taskJsonPath, 'utf8'));
+                        taskVersion = `${taskJson.version.Major}.${taskJson.version.Minor}.${taskJson.version.Patch}`;
+                    } catch { /* use default */ }
+
+                    const env = {
+                        ...process.env,
+                        TELEMETRY_REPO: tl.getVariable('Build.Repository.Name') || '',
+                        TELEMETRY_ACTION_REF: taskVersion,
+                    };
+                    // Fire-and-forget — unref so it doesn't keep the process alive
+                    const child = execFile('bash', [scriptPath], { env, timeout: 10000 });
+                    child.unref();
+                    child.on('error', () => { /* swallow */ });
+                } catch {
+                    // Never let telemetry failures affect the task
+                }
+            } else {
+                console.log('Telemetry is disabled. If you find this task useful, please rate it on the Visual Studio Marketplace: https://marketplace.visualstudio.com/items?itemName=shawn-mcgough.fast-synapse-deploy');
+            }
 
             Utility.throwIfError(tl.execSync("az", "--version"));
 
